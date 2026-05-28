@@ -41,6 +41,111 @@
     z-index: 0;
   }
 
+  /* ESTILOS DO LOCKSCREEN (ECRÃ DE PASSWORD) */
+  #lockScreen {
+    position: fixed;
+    inset: 0;
+    background: var(--dark);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  #lockScreen.unlocked {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-20px);
+  }
+
+  .lock-container {
+    text-align: center;
+    max-width: 320px;
+    width: 100%;
+    animation: fadeIn 1.2s ease both;
+  }
+
+  .lock-logo {
+    width: 160px;
+    height: auto;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .lock-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--gold-light);
+  }
+
+  .lock-input-wrapper {
+    position: relative;
+    margin-top: 1.5rem;
+  }
+
+  .lock-input {
+    width: 100%;
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.9rem 1rem;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    letter-spacing: 0.15em;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .lock-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(201,168,76,0.1);
+  }
+
+  .lock-btn {
+    width: 100%;
+    margin-top: 1rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.9rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .lock-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  .lock-error {
+    color: #ff4a4a;
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+    min-height: 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  /* CONTEÚDO PRINCIPAL (ESCONDIDO ATÉ FAZER LOGIN) */
+  #mainContent {
+    opacity: 0;
+    transition: opacity 0.8s ease 0.2s;
+  }
+
+  #mainContent.revealed {
+    opacity: 1;
+  }
+
   .page { position: relative; z-index: 1; }
 
   /* LOGO SPLASH — primeiro ecrã só com logo */
@@ -52,7 +157,6 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
   }
 
   .logo-splash::before {
@@ -72,44 +176,24 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-
     animation: fadeIn 1.2s ease both;
   }
 
   .logo-splash-inner img {
-    width: 120%;
+    width: 100%;
+    max-width: 500px;
     height: auto;
     object-fit: contain;
   }
 
-  .logo-splash-inner .logo-upload-hint {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .logo-splash-inner .logo-upload-hint svg { width: 64px; height: 64px; }
-
-  .logo-splash-inner .logo-upload-hint span {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  #logoInput { display: none; }
-
   .splash-scroll {
     position: absolute;
     bottom: 2.5rem;
-    /* left: 50%; */
-    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    animation: fadeIn 1s ease 1.5s both;
+    animation: fadeIn 1s ease 0.5s both;
   }
 
   .splash-scroll span {
@@ -149,53 +233,6 @@
     overflow: hidden;
   }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-line {
-    width: 60px;
-    height: 1px;
-    background: var(--gold);
-    margin: 0 auto 2rem;
-  }
-
-  .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .hero-sub {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: 3rem;
-  }
-
   /* SECTIONS */
   .section {
     padding: 5rem 2rem;
@@ -228,6 +265,7 @@
     text-transform: uppercase;
     color: var(--gold);
     margin-bottom: 4px;
+    text-align: center;
   }
 
   .section-title {
@@ -261,23 +299,11 @@
 
   .info-card:hover { border-color: var(--gold); }
 
-  .info-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--gold);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.3s;
-  }
-
-  .info-card:hover::before { transform: scaleY(1); }
-
   .info-icon {
     width: 36px; height: 36px;
     margin-bottom: 1rem;
     opacity: 0.6;
+    color: var(--gold);
   }
 
   .info-label {
@@ -290,49 +316,6 @@
 
   .info-value { font-size: 1.05rem; font-weight: 400; color: var(--text); }
   .info-detail { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
-
-  [contenteditable] {
-    outline: none;
-    border-bottom: 1px dashed transparent;
-    transition: border-color 0.2s;
-    cursor: text;
-  }
-
-  [contenteditable]:hover,
-  [contenteditable]:focus { border-bottom-color: var(--gold); }
-
-  [contenteditable]:empty::before {
-    content: attr(data-placeholder);
-    color: var(--text-muted);
-    opacity: 0.5;
-  }
-
-  /* MAP */
-  .map-container {
-    width: 100%; height: 380px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 2rem;
-    position: relative;
-  }
-
-  .map-container iframe {
-    width: 100%; height: 100%;
-    border: none;
-    filter: grayscale(80%) invert(90%) contrast(85%);
-  }
-
-  .map-overlay {
-    position: absolute;
-    bottom: 1rem; left: 1rem;
-    background: var(--dark);
-    border: 1px solid var(--border);
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
 
   /* CHECKLIST */
   .checklist {
@@ -384,89 +367,6 @@
     padding-left: 2px;
   }
 
-  .add-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    border: 1px dashed var(--border);
-    color: var(--text-muted);
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    margin-top: 1rem;
-  }
-
-  .add-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-  /* RSVP */
-  .rsvp-block {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: var(--dark-2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .rsvp-block::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  .rsvp-block h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    font-weight: 400;
-    margin-bottom: 1rem;
-  }
-
-  .rsvp-block p {
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    max-width: 480px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .rsvp-cta {
-    display: inline-block;
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 0.9rem 2.5rem;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .rsvp-cta:hover { background: var(--gold); color: var(--dark); }
-
-  footer {
-    text-align: center;
-    padding: 3rem 2rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-  }
-
-  footer .gold { color: var(--gold); }
-
   .ornament {
     text-align: center;
     margin: 1rem 0 2rem;
@@ -476,98 +376,40 @@
     opacity: 0.5;
   }
 
-  /* MODAL */
-  .modal-bg {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-bg.open { display: flex; }
-
-  .modal {
-    background: var(--dark-2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2.5rem;
-    max-width: 400px;
-    width: 90%;
-  }
-
-  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.5rem; }
-  .modal p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
-
-  .modal input[type="text"] {
-    width: 100%;
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    color: var(--text);
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .modal input:focus { border-color: var(--gold); }
-
-  .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; }
-
-  .btn-cancel {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 0.6rem 1.25rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-  }
-
-  .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
-
-  .btn-confirm {
-    background: var(--gold);
-    border: 1px solid var(--gold);
-    color: var(--dark);
-    padding: 0.6rem 1.25rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-
-  .btn-confirm:hover { background: var(--gold-light); }
-
   @media (max-width: 600px) {
-    .hero h1 { font-size: 2.5rem; }
     .info-grid { grid-template-columns: 1fr; }
     .checklist { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
-<div class="page">
+
+<!-- ECRÃ DE BLOQUEIO (PASSWORD) -->
+<div id="lockScreen">
+  <div class="lock-container">
+    <img src="logos_estampagem/logo_verso_4k.png" class="lock-logo" alt="Logo Cardoso">
+    <h1 class="lock-title">Acesso Exclusivo</h1>
+    <p class="section-label" style="color: var(--text-muted);">4 dígitos que tu e todos sabemos</p>
+    
+    <div class="lock-input-wrapper">
+      <input type="password" id="passwordInput" class="lock-input" placeholder="••••">
+      <button onclick="checkPassword()" class="lock-btn">Entrar</button>
+      <div id="lockError" class="lock-error">Código incorreto. Tenta novamente.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEÚDO DO CONVITE (SÓ FICA VISÍVEL APÓS A PASSWORD CORRETA) -->
+<div id="mainContent" class="page">
 
   <!-- ECRÃ 1 — Logo a ecrã cheio -->
   <section class="logo-splash" id="logoSplash">
-    <label class="logo-splash-inner" id="logoArea" title="Clica para adicionar logo">
-      <div class="logo-upload-hint" id="logoPlaceholder">
-        <img src="logos_estampagem/logo_verso_4k.png">
-      </div>
-    </label>
-
+    <div class="logo-splash-inner">
+      <img src="logos_estampagem/logo_verso_4k.png" alt="Logo Verso">
+    </div>
+    <p class="section-label">Despedida de Solteiro do Cardoso</p>
     <div class="splash-scroll">
-      <span>Ver convite</span>
+      <span>Fazer Scroll</span>
       <div class="splash-scroll-arrow"></div>
     </div>
   </section>
@@ -579,7 +421,7 @@
     <div class="section-header">
       <span class="section-number">01</span>
       <div class="section-title-block">
-        <p class="section-label">Detalhes</p>
+        <p class="section-label" style="text-align: left;">Detalhes</p>
         <h2 class="section-title">Quando &amp; Onde</h2>
       </div>
     </div>
@@ -608,8 +450,8 @@
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
         </svg>
         <p class="info-label">Local</p>
-        <p class="info-value" contenteditable="true" data-placeholder="Nome do local">Rua Central da Agra 74, Leça do Balio</p>
-        <p class="info-detail" contenteditable="true" data-placeholder="Rua, Cidade">Leça do Balio, Portugal</p>
+        <p class="info-value">Rua Central da Agra 74</p>
+        <p class="info-detail">Leça do Balio, Portugal</p>
       </div>
     </div>
   </section>
@@ -621,7 +463,7 @@
     <div class="section-header">
       <span class="section-number">02</span>
       <div class="section-title-block">
-        <p class="section-label">Preparação</p>
+        <p class="section-label" style="text-align: left;">Preparação</p>
         <h2 class="section-title">O que trazer</h2>
       </div>
     </div>
@@ -743,107 +585,47 @@
         <div><p class="check-text">Meia branca</p><p class="check-sub">Só uma. A razão será revelada.</p></div>
       </div>
     </div>
-
-     <!-- <button class="add-btn" onclick="addItem()">+ Adicionar item</button> -->
   </section>
 
   <div class="divider"></div>
 
-  <!-- ECRÃ 2 — Hero com nome -->
+  <!-- ECRÃ FINAL — Outro Logo -->
   <section class="hero">
-    <label class="logo-splash-inner" id="logoArea" title="Clica para adicionar logo">
-      <div class="logo-upload-hint" id="logoPlaceholder">
-        <img src="logos_estampagem/logo_frontal_1_4k.png">
-      </div>
-    </label>
+    <div class="logo-splash-inner">
+      <img src="logos_estampagem/logo_frontal_1_4k.png" alt="Logo Frontal" style="max-width: 400px;">
+    </div>
   </section>
 </div>
 
-<!-- MODAL: Adicionar item -->
-<div class="modal-bg" id="addModal">
-  <div class="modal">
-    <h3>Novo item</h3>
-    <p>Adiciona um item à lista.</p>
-    <input type="text" id="newItemText" placeholder="Ex: Passaporte">
-    <input type="text" id="newItemSub" placeholder="Detalhe opcional">
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-      <button class="btn-confirm" onclick="confirmAddItem()">Adicionar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Mapa -->
-<div class="modal-bg" id="mapModal">
-  <div class="modal">
-    <h3>Localização</h3>
-    <p>Introduz a morada para atualizar o mapa.</p>
-    <input type="text" id="mapAddressInput" placeholder="Ex: Rua do Heroísmo 42, Porto">
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeMapModal()">Cancelar</button>
-      <button class="btn-confirm" onclick="confirmMapAddress()">Atualizar</button>
-    </div>
-  </div>
-</div>
-
 <script>
-  document.getElementById('logoInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      const area = document.getElementById('logoArea');
-      area.innerHTML = '<img src="' + ev.target.result + '" alt="Logo" style="width:100%;max-width:560px;height:auto;object-fit:contain;padding:2rem;">';
-    };
-    reader.readAsDataURL(file);
-  });
+  // DEFINE AQUI A PASSWORD DO CONVITE
+  const CORRECT_PASSWORD = "1590";
 
-  function addItem() {
-    document.getElementById('newItemText').value = '';
-    document.getElementById('newItemSub').value = '';
-    document.getElementById('addModal').classList.add('open');
-    setTimeout(() => document.getElementById('newItemText').focus(), 100);
+  function checkPassword() {
+    const input = document.getElementById('passwordInput').value;
+    const errorDiv = document.getElementById('lockError');
+    const lockScreen = document.getElementById('lockScreen');
+    const mainContent = document.getElementById('mainContent');
+
+    if (input === CORRECT_PASSWORD) {
+      // 1. Oculta o ecrã de bloqueio com animação
+      lockScreen.classList.add('unlocked');
+      // 2. Torna o conteúdo visível
+      mainContent.classList.add('revealed');
+      errorDiv.style.opacity = 0;
+    } else {
+      // Mostra mensagem de erro
+      errorDiv.style.opacity = 1;
+      // Pequeno efeito de vibração visual no input (opcional)
+      document.getElementById('passwordInput').focus();
+    }
   }
 
-  function closeModal() { document.getElementById('addModal').classList.remove('open'); }
-
-  function confirmAddItem() {
-    const text = document.getElementById('newItemText').value.trim();
-    if (!text) return;
-    const sub = document.getElementById('newItemSub').value.trim();
-    const item = document.createElement('div');
-    item.className = 'checklist-item';
-    item.innerHTML = '<div class="check-icon">✓</div><div><p class="check-text" contenteditable="true">' + text + '</p><p class="check-sub" contenteditable="true">' + sub + '</p></div>';
-    document.getElementById('checklist').appendChild(item);
-    closeModal();
-  }
-
-  function updateMapAddress() {
-    document.getElementById('mapAddressInput').value = '';
-    document.getElementById('mapModal').classList.add('open');
-    setTimeout(() => document.getElementById('mapAddressInput').focus(), 100);
-  }
-
-  function closeMapModal() { document.getElementById('mapModal').classList.remove('open'); }
-
-  function confirmMapAddress() {
-    const addr = document.getElementById('mapAddressInput').value.trim();
-    if (!addr) return;
-    document.getElementById('mapIframe').src = 'https://maps.google.com/maps?q=' + encodeURIComponent(addr) + '&output=embed&z=16';
-    document.getElementById('mapLabel').textContent = addr;
-    closeMapModal();
-  }
-
-  document.querySelectorAll('.modal-bg').forEach(bg => {
-    bg.addEventListener('click', function(e) {
-      if (e.target === this) this.classList.remove('open');
-    });
-  });
-
-  document.getElementById('rsvpBtn').addEventListener('click', function(e) {
-    e.preventDefault();
-    const msg = encodeURIComponent('Confirmado! Conto estar presente na despedida de solteiro do João Cardoso. 🥂');
-    window.open('https://wa.me/?text=' + msg, '_blank');
+  // Permite fazer "Enter" para submeter a password
+  document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      checkPassword();
+    }
   });
 </script>
 </body>
