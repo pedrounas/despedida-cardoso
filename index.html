@@ -42,6 +42,7 @@
   }
 
   /* ESTILOS DO LOCKSCREEN (ECRÃ DE PASSWORD) */
+/* ESTILOS DO LOCKSCREEN (ECRÃ DE PASSWORD MODIFICADO) */
   #lockScreen {
     position: fixed;
     inset: 0;
@@ -50,8 +51,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    justify-content: flex-start; /* Alinha o conteúdo ao topo em vez de centrar */
+    padding: 15vh 2rem 2rem; /* Usa margem interna vertical baseada na altura do ecrã */
+    overflow-y: auto; /* Permite scroll se o ecrã for minúsculo */
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
@@ -65,7 +67,7 @@
     text-align: center;
     max-width: 320px;
     width: 100%;
-    animation: fadeIn 1.2s ease both;
+    /* Removida a animação complexa para evitar conflitos de renderização com o teclado */
   }
 
   .lock-logo {
@@ -485,7 +487,7 @@
       </div>
       <div class="checklist-item">
         <div class="check-icon">✓</div>
-        <div><p class="check-text">Toalha</p><p class="check-sub">A tua, não a do vizinho</p></div>
+        <div><p class="check-text">Toalha de praia</p><p class="check-sub">A tua, não a do vizinho</p></div>
       </div>
       <div class="checklist-item">
         <div class="check-icon">✓</div>
@@ -496,8 +498,12 @@
         <div><p class="check-text">Roupa normal</p><p class="check-sub">Não pode ser tudo mau</p></div>
       </div>
       <div class="checklist-item">
-        <div class="check-icon mystery">?</div>
+        <div class="check-icon">✓</div>
         <div><p class="check-text">Guronsan</p><p class="check-sub">O teu seguro de vida para a manhã seguinte</p></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-icon">✓</div>
+        <div><p class="check-text">Kit de primeiros socorros</p><p class="check-sub">Para remendar o que a noite tentar estragar</p></div>
       </div>
     </div>
 
