@@ -41,8 +41,7 @@
     z-index: 0;
   }
 
-  /* ESTILOS DO LOCKSCREEN (ECRÃ DE PASSWORD) */
-/* ESTILOS DO LOCKSCREEN (ECRÃ DE PASSWORD MODIFICADO) */
+  /* ESTILOS DO LOCKSCREEN MODIFICADO PARA KEYPAD */
   #lockScreen {
     position: fixed;
     inset: 0;
@@ -51,9 +50,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Alinha o conteúdo ao topo em vez de centrar */
-    padding: 15vh 2rem 2rem; /* Usa margem interna vertical baseada na altura do ecrã */
-    overflow-y: auto; /* Permite scroll se o ecrã for minúsculo */
+    justify-content: flex-start;
+    padding: 8vh 2rem 2rem;
+    overflow-y: auto;
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
@@ -67,13 +66,12 @@
     text-align: center;
     max-width: 320px;
     width: 100%;
-    /* Removida a animação complexa para evitar conflitos de renderização com o teclado */
   }
 
   .lock-logo {
-    width: 160px;
+    width: 130px;
     height: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     opacity: 0.9;
   }
 
@@ -84,61 +82,100 @@
     color: var(--gold-light);
   }
 
-  .lock-input-wrapper {
-    position: relative;
-    margin-top: 1.5rem;
+  /* Indicadores de pontos do PIN */
+  .pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    margin: 2rem 0 1.5rem;
   }
 
-  .lock-input {
-    width: 100%;
+  .dot {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    transition: background 0.2s, transform 0.2s, border-color 0.2s;
+  }
+
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.1);
+  }
+
+  .dot.error {
+    border-color: #ff4a4a;
+    background: #ff4a4a;
+    animation: shake 0.3s ease-in-out;
+  }
+
+  /* Grelha do Keypad */
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin: 0 auto;
+    max-width: 280px;
+  }
+
+  .key {
     background: var(--dark-2);
     border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.9rem 1rem;
     color: var(--text);
     font-family: 'Barlow', sans-serif;
-    font-size: 1rem;
-    text-align: center;
-    letter-spacing: 0.15em;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-
-  .lock-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 10px rgba(201,168,76,0.1);
-  }
-
-  .lock-btn {
-    width: 100%;
-    margin-top: 1rem;
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 0.9rem;
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-size: 1.6rem;
+    font-weight: 400;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: all 0.3s;
+    user-select: none;
+    transition: all 0.15s ease;
+    margin: 0 auto;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .lock-btn:hover {
+  .key:active {
     background: var(--gold);
     color: var(--dark);
+    border-color: var(--gold);
+    transform: scale(0.95);
+  }
+
+  .key.action-key {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+  }
+
+  .key.action-key:active {
+    background: transparent;
+    color: var(--text);
+    transform: none;
   }
 
   .lock-error {
     color: #ff4a4a;
     font-size: 0.85rem;
-    margin-top: 0.75rem;
+    margin-top: 1.5rem;
     min-height: 20px;
     opacity: 0;
     transition: opacity 0.3s;
   }
 
-  /* CONTEÚDO PRINCIPAL (ESCONDIDO ATÉ FAZER LOGIN) */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+
+  /* CONTEÚDO PRINCIPAL */
   #mainContent {
     opacity: 0;
     transition: opacity 0.8s ease 0.2s;
@@ -150,7 +187,7 @@
 
   .page { position: relative; z-index: 1; }
 
-  /* LOGO SPLASH — primeiro ecrã só com logo */
+  /* LOGO SPLASH */
   .logo-splash {
     min-height: 100vh;
     display: flex;
@@ -222,7 +259,7 @@
     50% { opacity: 1; transform: scaleY(1); }
   }
 
-  /* HERO — segundo ecrã */
+  /* HERO */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -386,25 +423,39 @@
 </head>
 <body>
 
-<!-- ECRÃ DE BLOQUEIO (PASSWORD) -->
 <div id="lockScreen">
   <div class="lock-container">
     <img src="logos_estampagem/logo_verso_4k.png" class="lock-logo" alt="Logo Cardoso">
     <h1 class="lock-title">Acesso Exclusivo</h1>
     <p class="section-label" style="color: var(--text-muted);">4 dígitos que tu e todos sabemos</p>
     
-    <div class="lock-input-wrapper">
-      <input type="password" id="passwordInput" class="lock-input" placeholder="••••">
-      <button id="scrollButton" onclick="checkPassword()" class="lock-btn">Entrar</button>
-      <div id="lockError" class="lock-error">Código incorreto. Tenta novamente.</div>
+    <div class="pin-dots">
+      <div class="dot" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+      <div class="dot" id="dot3"></div>
+      <div class="dot" id="dot4"></div>
     </div>
+
+    <div class="keypad">
+      <div class="key" onclick="pressKey('1')">1</div>
+      <div class="key" onclick="pressKey('2')">2</div>
+      <div class="key" onclick="pressKey('3')">3</div>
+      <div class="key" onclick="pressKey('4')">4</div>
+      <div class="key" onclick="pressKey('5')">5</div>
+      <div class="key" onclick="pressKey('6')">6</div>
+      <div class="key" onclick="pressKey('7')">7</div>
+      <div class="key" onclick="pressKey('8')">8</div>
+      <div class="key" onclick="pressKey('9')">9</div>
+      <div class="key action-key"></div> <div class="key" onclick="pressKey('0')">0</div>
+      <div class="key action-key" onclick="pressDelete()">Apagar</div>
+    </div>
+
+    <div id="lockError" class="lock-error">Código incorreto. Tenta novamente.</div>
   </div>
 </div>
 
-<!-- CONTEÚDO DO CONVITE (SÓ FICA VISÍVEL APÓS A PASSWORD CORRETA) -->
 <div id="mainContent" class="page">
 
-  <!-- ECRÃ 1 — Logo a ecrã cheio -->
   <section class="logo-splash" id="logoSplash">
     <div class="logo-splash-inner">
       <img src="logos_estampagem/logo_verso_4k.png" alt="Logo Verso">
@@ -417,7 +468,6 @@
 
   <div class="divider"></div>
 
-  <!-- QUANDO & ONDE -->
   <section class="section">
     <div class="section-header">
       <span class="section-number">01</span>
@@ -459,7 +509,6 @@
 
   <div class="divider"></div>
 
-  <!-- O QUE TRAZER -->
   <section class="section">
     <div class="section-header">
       <span class="section-number">02</span>
@@ -594,7 +643,6 @@
 
   <div class="divider"></div>
 
-  <!-- ECRÃ FINAL — Outro Logo -->
   <section class="hero">
     <div class="logo-splash-inner">
       <img src="logos_estampagem/logo_frontal_1_4k.png" alt="Logo Frontal" style="max-width: 400px;">
@@ -609,42 +657,81 @@
 </div>
 
 <script>
-  const scrollButton = document.getElementById("scrollButton");
-
-scrollButton.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "smooth"
-  });
-});
-  // DEFINE AQUI A PASSWORD DO CONVITE
   const CORRECT_PASSWORD = "1590";
+  let currentPin = "";
 
-  function checkPassword() {
-    const input = document.getElementById('passwordInput').value;
-    const errorDiv = document.getElementById('lockError');
-    const lockScreen = document.getElementById('lockScreen');
-    const mainContent = document.getElementById('mainContent');
-
-    if (input === CORRECT_PASSWORD) {
-      // 1. Oculta o ecrã de bloqueio com animação
-      lockScreen.classList.add('unlocked');
-      // 2. Torna o conteúdo visível
-      mainContent.classList.add('revealed');
-      errorDiv.style.opacity = 0;
-    } else {
-      // Mostra mensagem de erro
-      errorDiv.style.opacity = 1;
-      // Pequeno efeito de vibração visual no input (opcional)
-      document.getElementById('passwordInput').focus();
+  function pressKey(num) {
+    if (currentPin.length < 4) {
+      currentPin += num;
+      updateDots();
+      document.getElementById('lockError').style.opacity = 0;
+      
+      // Valida automaticamente ao atingir o 4.º número
+      if (currentPin.length === 4) {
+        setTimeout(checkPassword, 250);
+      }
     }
   }
 
-  // Permite fazer "Enter" para submeter a password
-  document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      checkPassword();
+  function pressDelete() {
+    if (currentPin.length > 0) {
+      currentPin = currentPin.slice(0, -1);
+      updateDots();
+    }
+  }
+
+  function updateDots() {
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById(`dot${i}`);
+      if (i <= currentPin.length) {
+        dot.classList.add('active');
+        dot.classList.remove('error');
+      } else {
+        dot.classList.remove('active');
+        dot.classList.remove('error');
+      }
+    }
+  }
+
+  function checkPassword() {
+    const lockScreen = document.getElementById('lockScreen');
+    const mainContent = document.getElementById('mainContent');
+    const errorDiv = document.getElementById('lockError');
+
+    if (currentPin === CORRECT_PASSWORD) {
+      // Sucesso - Abre o site
+      lockScreen.classList.add('unlocked');
+      mainContent.classList.add('revealed');
+      
+      // Força o viewport a ir para o topo absoluto
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "instant"
+      });
+    } else {
+      // Erro - Aplica a animação e resenha visual vermelha
+      errorDiv.style.opacity = 1;
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        dot.classList.remove('active');
+        dot.classList.add('error');
+      }
+      
+      // Reset automático do PIN após o erro para tentar de novo
+      setTimeout(() => {
+        currentPin = "";
+        updateDots();
+      }, 600);
+    }
+  }
+
+  // Captura também teclado físico caso alguém abra no computador
+  document.addEventListener('keydown', function(e) {
+    if (/[0-9]/.test(e.key)) {
+      pressKey(e.key);
+    } else if (e.key === 'Backspace') {
+      pressDelete();
     }
   });
 </script>
